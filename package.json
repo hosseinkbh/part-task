@@ -1,13 +1,17 @@
 {
-  "name": "agent",
+  "name":"root",
   "version": "0.0.1",
   "description": "",
   "author": "hossein khodabandeh <<hosseinkhodabandeh01@gmail.com>>",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "nest start --watch"
+    "start:dev": "nest start -watch",
+    "start:agent": "yarn workspace Agent start",
+    "start:proccess": "yarn workspace Proccess start ",
+    "start:agent:dev": "yarn workspace Agent start --watch",
+    "start:proccess:dev": "yarn workspace Proccess start --watch"
+
   },
   "dependencies": {
     "@faker-js/faker": "^9.2.0",
@@ -37,6 +41,6 @@
     "typescript": "^5.1.3"
   },
     "private": true,
-    "workspaces": ["agent", "proccess"]
+    "workspaces": ["Agent", "Proccess"]
   
 }
