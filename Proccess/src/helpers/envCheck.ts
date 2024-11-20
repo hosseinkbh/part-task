@@ -18,6 +18,13 @@ export default class EnvironmentVariables {
     @IsNotEmpty()
     @IsString()
     MONGODB_URI!: string
+    @IsNotEmpty()
+    @IsString()
+    REDIS_HOST!: string
+    @IsNotEmpty()
+    @IsString()
+    REDIS_PORT!:string
+
 
     static validate(config: Record<string, unknown>) {
         const validatedConfig = plainToInstance(EnvironmentVariables, config, {
