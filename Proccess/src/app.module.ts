@@ -5,9 +5,24 @@ import {ConfigModule, ConfigService} from '@nestjs/config';
 import EnvironmentVariables from './helpers/envCheck';
 import {ClientsModule, Transport} from '@nestjs/microservices';
 import {MongooseModule} from '@nestjs/mongoose';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
     imports: [
+        RedisModule.forRootAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory(configService: ConfigService<EnvironmentVariables, true>) {
+              return {
+                type: "single",
+                options: {
+                  host: configService.get("REDIS_HOST"),
+                  port: +configService.get("REDIS_PORT"),
+                },
+              };
+            },
+          }),
+
         MongooseModule.forRootAsync({
             inject: [ConfigService],
             imports: [ConfigModule],
@@ -37,7 +52,7 @@ import {MongooseModule} from '@nestjs/mongoose';
                             groupId: configService.getOrThrow("KAFKA_GROUP_ID"),
                         },
                         client: {
-                            brokers: configService.getOrThrow("KAFKA_BROKER"),
+                            brokers:[configService.getOrThrow("KAFKA_BROKER")],
                             clientId: configService.getOrThrow("KAFKA_CLIENT_ID"),
                         },
                     },
