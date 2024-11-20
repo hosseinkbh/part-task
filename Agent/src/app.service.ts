@@ -10,7 +10,7 @@ export class AppService {
     private KAFKA_TOPIC = this.configService.getOrThrow('KAFKA_TOPIC');
 
     constructor(
-        @Inject('AGENT_CLIENT')
+        @Inject('KAFKA_CLIENT')
         private readonly kafkaClient: ClientKafka,
         private readonly configService: ConfigService,
     ) {
