@@ -16,19 +16,20 @@ async createRule(
 ){
     await this.rulesService.createRule(body)
 }
-@Get("/:id")
+@Get("/:id")``
 async GetRule(
     @Param() {id}:MongoObjectIdDTO
 ){
     // await this.rulesService.createRule(body)
 }
-@Get("/:id")
-async occurenceOfRule(
+@Get("/occurrence/:id")
+async occurrenceOfRule(
     @Param() {id}:MongoObjectIdDTO
 ){
     // await this.rulesService.createRule(body)
 }
-
+@Get("agents/:id")
+async agentAppliedRules() {}
 
 
 }

@@ -62,19 +62,45 @@ export default class RulesService{
     }
     async occurenceOfRule(id:string,startDate:string,endDate :string){
         this.validateModel.aggregate([{
-            $match:{"ruleId" : id,
-                createdAt : { $and: [ {$gte:new Date(startDate).toISOString() 
-                }, {$lte:new Date(endDate).toISOString()} ] }
+            $match:{"ruleId" : id
+            },},
+            {
+                createdAt: {
+                    $and: [{
+                        $gte: new Date(startDate).toISOString()
+                    }, {$lte: new Date(endDate).toISOString()}]
+                },
+            },{
+                $project: {
+                    "createdAt": 1,
+                    "agentId": 1
+                },
+            },{
+                $group: {
+                    _id: "$agentId",
+                    dates: {$push: "$createdAt"}
+                },
+            }])
+    }
+    async getRuleActionPerAgent (id:string){
+        await this.validateModel.aggregate([
+            {
+                $match : {
+                    ruleId : id
+                }
+            },{
+                $group: {
+                    _id: "$agentId",
+                    counts: {
+                        $sum: 1
+                    }
+                }
+            }, {
+                $sort: {
+                    counts: -1
+                }
+            }
+        ])
 
-            },
-            $project :{
-                "createdAt":1,
-                "agentId":1
-            },
-            $group : {
-                _id :"$agentId",
-                dates :{$push:"$createdAt"}
-            },
-        }])
     }
 }
