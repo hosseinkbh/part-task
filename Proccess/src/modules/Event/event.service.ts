@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { EventModel } from "../../models/event.model";
 import { Model } from "mongoose";
@@ -7,10 +7,12 @@ import { logicEnum, RulesModel } from "../../models/rules.model";
 import { ValidateModel } from "../../models/validate.model";
 import { InjectRedis } from "@nestjs-modules/ioredis";
 import Redis from "ioredis";
+import { ClientKafka } from "@nestjs/microservices";
 
 @Injectable()
 export default class EventService {
   constructor(
+    @Inject("PROCCESS_CLIENT") private readonly kafkaClient: ClientKafka,
     @InjectModel(EventModel.name)
     private readonly eventModel: Model<EventModel>,
     @InjectModel(RulesModel.name) private readonly ruleModel: Model<RulesModel>,

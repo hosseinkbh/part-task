@@ -48,6 +48,7 @@ import { RedisModule } from '@nestjs-modules/ioredis';
                 useFactory: (configService: ConfigService<EnvironmentVariables, true>) => ({
                     transport: Transport.KAFKA,
                     options: {
+                        subscribe :  configService.getOrThrow("KAFKA_TOPIC"),
                         consumer: {
                             groupId: configService.getOrThrow("KAFKA_GROUP_ID"),
                         },

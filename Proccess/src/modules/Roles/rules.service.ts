@@ -66,11 +66,12 @@ export default class RulesService{
             $match:{"ruleId" : id
             },},
             {
-                createdAt: {
-                    $and: [{
+                $match :{
+                createdAt : {$and: [{
                         $gte: new Date(startDate).toISOString()
                     }, {$lte: new Date(endDate).toISOString()}]
-                },
+                }}
+                
             },{
                 $project: {
                     "createdAt": 1,
