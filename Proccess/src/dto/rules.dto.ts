@@ -49,3 +49,12 @@ export class ListRulesPaginationDto {
     @IsNumber()
     limit?:number
 }
+
+
+export class RuleDateDto {
+    @IsDate()
+    startDate !:string
+    @IsDate()
+    endDate !:string
+
+}

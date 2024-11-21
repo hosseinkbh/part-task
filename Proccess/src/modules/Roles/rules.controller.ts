@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
-import { CreateRuleDto } from "../../dto/rules.dto";
+import { CreateRuleDto, ListRulesPaginationDto, RuleDateDto, UpadateRuleDto } from "../../dto/rules.dto";
 import RulesService from "./rules.service";
 import { MongoObjectIdDTO } from "../../dto/global.dto";
 
@@ -16,20 +16,47 @@ async createRule(
 ){
     await this.rulesService.createRule(body)
 }
-@Get("/:id")``
+@Get("/:id")
 async GetRule(
     @Param() {id}:MongoObjectIdDTO
 ){
-    // await this.rulesService.createRule(body)
+    return this.rulesService.getRule(id)
 }
+@Get("/list")
+async GetRuleList(
+    @Param() paginatioin : ListRulesPaginationDto
+){
+    return this.rulesService.listRules(paginatioin)
+}
+
+@Get("/update/:id")
+async updateRule(
+    @Param() {id} : MongoObjectIdDTO,
+    @Body() body : UpadateRuleDto,
+
+){
+    await this.rulesService.updateRule(id,body)
+}
+@Get("/delete/:id")
+async deleteRule(
+    @Param() {id} : MongoObjectIdDTO,
+
+){
+    await this.rulesService.deActiveRule(id)
+}
+
+
 @Get("/occurrence/:id")
 async occurrenceOfRule(
     @Param() {id}:MongoObjectIdDTO
+    ,@Body() body :RuleDateDto
 ){
-    // await this.rulesService.createRule(body)
+    return this.rulesService.occurenceOfRule(id,body)
 }
 @Get("agents/:id")
-async agentAppliedRules() {}
-
-
+async getRuleActionPerAgent(
+    @Param() {id}:MongoObjectIdDTO
+) {
+    return this.rulesService.getRuleActionPerAgent(id)
+}
 }

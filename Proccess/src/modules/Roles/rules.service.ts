@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { RulesModel, StatusEnum } from "../../models/rules.model";
 import { AggregatePaginateModel, Model } from "mongoose";
-import { CreateRuleDto, ListRulesPaginationDto, UpadateRuleDto } from "../../dto/rules.dto";
+import { CreateRuleDto, ListRulesPaginationDto, RuleDateDto, UpadateRuleDto } from "../../dto/rules.dto";
 import Redis from "ioredis";
 import { InjectRedis } from "@nestjs-modules/ioredis";
 import { ValidateModel } from "../../models/validate.model";
@@ -60,7 +60,8 @@ export default class RulesService{
         await this.Redis.hdel(`rule-${id}`)
         await this.ruleModel.findByIdAndUpdate(id,{status : StatusEnum.DEACTIVE})
     }
-    async occurenceOfRule(id:string,startDate:string,endDate :string){
+    async occurenceOfRule(id:string,dates:RuleDateDto){
+    const {startDate , endDate} = dates;
         this.validateModel.aggregate([{
             $match:{"ruleId" : id
             },},
