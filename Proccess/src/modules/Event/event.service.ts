@@ -4,7 +4,7 @@ import { EventModel } from "../../models/event.model";
 import { Model } from "mongoose";
 import { EventDataDto } from "../../dto/event.dto";
 import { logicEnum, RulesModel } from "../../models/rules.model";
-import { ValidateModel } from "../../models/validate.model";
+import { AdaptationsModel } from "../../models/Adaptations.model";
 import { CacheService } from "../cacheService/cache.service";
 
 @Injectable()
@@ -13,8 +13,8 @@ export default class EventService {
     @InjectModel(EventModel.name)
     private readonly eventModel: Model<EventModel>,
     @InjectModel(RulesModel.name) private readonly ruleModel: Model<RulesModel>,
-    @InjectModel(ValidateModel.name)
-    private readonly validateModel: Model<ValidateModel>,
+    @InjectModel(AdaptationsModel.name)
+    private readonly AdaptionModel: Model<AdaptationsModel>,
     private readonly cacheService: CacheService,
   ) {}
 
@@ -32,7 +32,7 @@ export default class EventService {
     if (rules && rules.length > 0) {
       for (const rule of rules) {
         if (this.validateEvent(event, rule)) {
-          await this.validateModel.create({
+          await this.AdaptionModel.create({
             agentId: event.agentId,
             eventId: createdEvent._id,
             ruleId: rule._id,

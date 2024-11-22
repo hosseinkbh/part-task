@@ -4,7 +4,7 @@ import { EventModelDefinition } from "../../models/event.model";
 import EventController from "./event.controller";
 import EventService from "./event.service";
 import { RulesModelDefinition } from "../../models/rules.model";
-import { ValidateModelDefinition } from "../../models/validate.model";
+import { AdaptionModelDefinition } from "../../models/Adaptations.model";
 import { CacheService } from "../cacheService/cache.service";
 
 @Module({
@@ -12,7 +12,7 @@ import { CacheService } from "../cacheService/cache.service";
     MongooseModule.forFeature([
       EventModelDefinition,
       RulesModelDefinition,
-      ValidateModelDefinition,
+      AdaptionModelDefinition,
     ]),
   ],
   controllers: [EventController],
