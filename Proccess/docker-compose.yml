@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  process:
+    image: hosseinkhodabandeh/process-service:latest
+    container_name: process_service
+    ports:
+      - "3010:3010"
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/task
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      KAFKA_TOPIC: main-topic
+      KAFKA_BROKER: kafka:9092
+      KAFKA_CLIENT_ID: process-client
+      KAFKA_GROUP_ID: kafka-group
+    depends_on:
+      - kafka
+      - redis
+      - mongo
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+    depends_on:
+      - zookeeper
+
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+    environment:
+      ALLOW_ANONYMOUS_LOGIN: "yes"
