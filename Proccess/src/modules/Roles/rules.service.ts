@@ -3,9 +3,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import { RulesModel, StatusEnum } from "../../models/rules.model";
 import { AggregatePaginateModel, Model } from "mongoose";
 import { CreateRuleDto, ListRulesPaginationDto, RuleDateDto, UpadateRuleDto } from "../../dto/rules.dto";
-import Redis from "ioredis";
-import { InjectRedis } from "@nestjs-modules/ioredis";
 import { ValidateModel } from "../../models/validate.model";
+import { CacheService } from "../cacheService/cache.service";
 
 
 
@@ -14,14 +13,14 @@ export default class RulesService{
 
     constructor(@InjectModel(RulesModel.name) private readonly ruleModel :AggregatePaginateModel<RulesModel>,
     @InjectModel(ValidateModel.name) private readonly validateModel :AggregatePaginateModel<ValidateModel>
-    ,@InjectRedis() private readonly Redis: Redis){}
+    ,private readonly cacheService : CacheService){}
 
    async createRule(data:CreateRuleDto){
     const rule = await this.ruleModel.create(data)
-    await this.Redis.hset(`rule-${rule._id}`,data)
+    await this.cacheService.SetKeyValue(`rule-${rule._id}`,data)
     }
     async getRule (id:string){
-       const cachedValue =  await this.Redis.hgetall(`rule-${id}`);
+       const cachedValue =  await this.cacheService.getKeyValue(`rule-${id}`);
     if(cachedValue){
    return cachedValue
     }else{
@@ -54,10 +53,10 @@ export default class RulesService{
         value : updatedRule?.value,
         logic : updatedRule?.logic
        }
-       await this.Redis.hset(`rule-${id}`,cacheParam)
+       await this.cacheService.SetKeyValue(`rule-${id}`,cacheParam)
     }
     async deActiveRule(id:string){
-        await this.Redis.hdel(`rule-${id}`)
+        await this.cacheService.Delete(`rule-${id}`)
         await this.ruleModel.findByIdAndUpdate(id,{status : StatusEnum.DEACTIVE})
     }
     async occurenceOfRule(id:string,dates:RuleDateDto){
