@@ -1,8 +1,9 @@
 import { ModelDefinition, Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { HydratedDocument, SchemaTimestampsConfig, Types } from "mongoose";
-import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2";
 import { EventModel } from "./event.model";
 import { RulesModel } from "./rules.model";
+
+const mongooseAggregatePaginate = require("mongoose-aggregate-paginate-v2");
 
 @Schema({ timestamps: true, collection: "adaption_model", versionKey: false })
 export class AdaptationsModel {
