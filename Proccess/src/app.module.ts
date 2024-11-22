@@ -33,7 +33,7 @@ import { RulesModule } from "./modules/Roles/rules.module";
       {
         imports: [ConfigModule],
         inject: [ConfigService],
-        name: "PROCCESS_CLIENT",
+        name: "PROCESS_CLIENT",
 
         useFactory: (
           configService: ConfigService<EnvironmentVariables, true>,

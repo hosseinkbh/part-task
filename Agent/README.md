@@ -1,3 +1,3 @@
 # Agent
 
- a service for Producing Events via kafka to Proccess service
+a service for Producing Events via kafka to Process service

@@ -1,3 +1,3 @@
-# Proccess
+# Process
 
- Main Service for Proccessing Events coming from Agent
+Main Service for Processing Events coming from Agent
