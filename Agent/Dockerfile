@@ -1,13 +1,13 @@
-FROM alpine
+FROM node:22-alpine
 
 WORKDIR /part-task/Agent
 
 COPY package*.json ./
 
-RUN yarn --verbose
+RUN yarn --production=false
 
 COPY * .
 
 EXPOSE 3002
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

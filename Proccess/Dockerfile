@@ -1,6 +1,6 @@
-FROM alpine
+FROM node:22-alpine
 
-WORKDIR /part-task/Proccess
+WORKDIR /part-task/Process
 
 COPY package*.json ./
 
