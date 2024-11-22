@@ -4,7 +4,7 @@ WORKDIR /part-task/Agent
 
 COPY package*.json ./
 
-RUN yarn --verbose 
+RUN yarn --verbose
 
 COPY * .
 
