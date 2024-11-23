@@ -5,6 +5,9 @@ import * as process from "node:process";
 export default class EnvironmentVariables {
     @IsNotEmpty()
     @IsString()
+    AGENT_ID!: string
+    @IsNotEmpty()
+    @IsString()
     KAFKA_TOPIC!: string
     @IsNotEmpty()
     @IsString()
@@ -29,19 +32,7 @@ export default class EnvironmentVariables {
 
 }
 
-export function getEnv(param: string | string[]) {
-    if (typeof param === "string") {
-        const env = process.env[param]
-        if (!env) {
-            const error = {
-                name: param,
-                message: `Please Set ${param} Environment Variable !!!`
-            }
-            throw Error(JSON.stringify(error))
-        } else {
-            return {param: env}
-        }
-    } else if (typeof param === "object") {
+export function getEnv(param: string[]) {
         const result: any = {}
         param.forEach((item) => {
             const env = process.env[item]
@@ -55,8 +46,9 @@ export function getEnv(param: string | string[]) {
                 result[item] = env
             }
         })
-        return result
-    }
+        if(result){
+            return result
+        }
     const error = {
         name: param,
         message: `Provided Environment Variable isnt Correct !!!`

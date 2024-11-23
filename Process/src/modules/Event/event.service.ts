@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { EventModel } from "../../models/event.model";
 import { Model } from "mongoose";
-import { EventDataDto } from "../../dto/event.dto";
+import {  DataEventDto } from "../../dto/event.dto";
 import { logicEnum, RulesModel } from "../../models/rules.model";
 import { AdaptationsModel } from "../../models/Adaptations.model";
 import { CacheService } from "../cacheService/cache.service";
@@ -18,17 +18,17 @@ export default class EventService {
     private readonly cacheService: CacheService,
   ) {}
 
-  async eventHandler(event: EventDataDto) {
+  async eventHandler(event: DataEventDto) {
     const createdEvent = await this.eventModel.create(event);
     const rulesKeys = await this.cacheService.getKeys("rule");
     let rules: any[] = [];
-    if (!rulesKeys) {
+    if (rulesKeys.length === 0) {
       rules = await this.ruleModel.find({ name: event.name });
     } else {
       for (const key of rulesKeys) {
         rules.push(await this.cacheService.getKeyValue(key));
       }
-    }
+    }    
     if (rules && rules.length > 0) {
       for (const rule of rules) {
         if (this.validateEvent(event, rule)) {
@@ -42,7 +42,7 @@ export default class EventService {
     }
   }
 
-  private validateEvent(event: EventDataDto, rule: RulesModel) {
+  private validateEvent(event: DataEventDto, rule: RulesModel) {
     const logic = {
       [logicEnum.eq]: (Eventvalue: number, Rulevalue: number) =>
         Rulevalue === Eventvalue,

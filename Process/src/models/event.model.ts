@@ -15,8 +15,8 @@ export class EventModel {
     name!: EventNamesEnum;
     @Prop({type: Number, required: true})
     value!: number;
-    @Prop({type: Number, required: true})
-    agentId!: number;
+    @Prop({type: String, required: true})
+    agentId!: string;
 }
 
 export const EventSchema = SchemaFactory.createForClass(EventModel);

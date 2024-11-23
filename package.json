@@ -10,7 +10,7 @@
     "start:agent": "yarn workspace Agent start",
     "start:process": "yarn workspace Process start ",
     "start:agent:dev": "yarn workspace Agent start --watch",
-    "start:process:dev": "yarn workspace Process start --watch"
+    "start:process:dev": "yarn workspace Process start -w"
   },
   "dependencies": {
     "@faker-js/faker": "^9.2.0",
@@ -22,6 +22,7 @@
     "@nestjs/schedule": "^4.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
+    "dotenv": "^16.4.5",
     "faker": "^6.6.6",
     "kafkajs": "^2.2.4",
     "reflect-metadata": "^0.2.0",

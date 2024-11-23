@@ -13,6 +13,8 @@ services:
       KAFKA_GROUP_ID: kafka-group
     depends_on:
       - kafka
+    networks:
+      - kafka-network
 
   kafka:
     image: bitnami/kafka:latest
@@ -23,9 +25,15 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LOG_RETENTION_HOURS: 24
+      KAFKA_LOG_SEGMENT_BYTES: 1073741824
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     depends_on:
       - zookeeper
+    networks:
+      - kafka-network
 
   zookeeper:
     image: bitnami/zookeeper:latest
@@ -34,3 +42,9 @@ services:
       - "2181:2181"
     environment:
       ALLOW_ANONYMOUS_LOGIN: "yes"
+    networks:
+      - kafka-network
+
+networks:
+  kafka-network:
+    driver: bridge

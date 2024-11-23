@@ -5,10 +5,12 @@ import RulesController from "./rules.controller";
 import RulesService from "./rules.service";
 import { AdaptionModelDefinition } from "../../models/Adaptations.model";
 import { CacheService } from "../cacheService/cache.service";
+import { CacheModule } from "../cacheService/cache.module";
 
 @Module({
   imports: [
     MongooseModule.forFeature([RulesModelDefinition, AdaptionModelDefinition]),
+  CacheModule
   ],
   controllers: [RulesController],
   providers: [RulesService, CacheService],

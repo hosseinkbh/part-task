@@ -1,8 +1,11 @@
 import {plainToInstance} from "class-transformer";
-import {IsNotEmpty, IsString, validateSync,} from "class-validator";
+import {IsNotEmpty, IsNumber, IsString, validateSync,} from "class-validator";
 import * as process from "node:process";
 
 export default class EnvironmentVariables {
+    @IsNotEmpty()
+    @IsNumber()
+    PORT!: number
     @IsNotEmpty()
     @IsString()
     KAFKA_TOPIC!: string
@@ -23,7 +26,7 @@ export default class EnvironmentVariables {
     REDIS_HOST!: string
     @IsNotEmpty()
     @IsString()
-    REDIS_PORT!:string
+    REDIS_PORT!: string
 
 
     static validate(config: Record<string, unknown>) {
@@ -41,9 +44,10 @@ export default class EnvironmentVariables {
     }
 }
 
-export function getEnv(param: string | string[]) {
-    if (typeof param === "string") {
-        const env = process.env[param]
+export function getEnv(param: string[]) {
+    const result: any = {}
+    param.forEach((item) => {
+        const env = process.env[item]
         if (!env) {
             const error = {
                 name: param,
@@ -51,28 +55,16 @@ export function getEnv(param: string | string[]) {
             }
             throw Error(JSON.stringify(error))
         } else {
-            return {param: env}
+            result[item] = env
         }
-    } else if (typeof param === "object") {
-        const result: any = {}
-        param.forEach((item) => {
-            const env = process.env[item]
-            if (!env) {
-                const error = {
-                    name: param,
-                    message: `Please Set ${param} Environment Variable !!!`
-                }
-                throw Error(JSON.stringify(error))
-            } else {
-                result[item] = env
-            }
-        })
-        return result
+    })
+    if (!result) {
+        const error = {
+            name: param,
+            message: `Provided Environment Variable isnt Correct !!!`
+        }
+        throw Error(JSON.stringify(error))
     }
-    const error = {
-        name: param,
-        message: `Provided Environment Variable isnt Correct !!!`
-    }
-    throw Error(JSON.stringify(error))
 
+    return result
 }
