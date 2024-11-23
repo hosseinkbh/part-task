@@ -20,8 +20,8 @@ export default class RulesController {
         return this.rulesService.getRule(id);
     }
 
-    @Get("/list")
-    async GetRuleList(@Body() pagination :ListRulesPaginationDto) {
+    @Get("/")
+    async GetRuleList(@Param() pagination?: ListRulesPaginationDto) {
         return this.rulesService.listRules(pagination);
     }
 

@@ -31,13 +31,12 @@ export default class RulesService {
         }
     }
 
-    async listRules(paginationData :ListRulesPaginationDto) {
-        const {skip, limit} = paginationData;
+    async listRules(paginationData?: ListRulesPaginationDto) {
         const paginate = {
-            skip: skip ? +skip : 0,
-            limit: limit ? +limit : 50,
+            skip: paginationData && paginationData.skip ? +paginationData.skip : 0,
+            limit: paginationData && paginationData.limit ? +paginationData.limit : 50,
         };
-        return this.ruleModel.find({},{},{skip :paginate.skip,limit :paginate.limit});
+        return this.ruleModel.find({}, {}, paginate);
     }
 
     async updateRule(id: string, values: UpadateRuleDto) {
@@ -68,12 +67,12 @@ export default class RulesService {
     }
 
     async occurenceOfRule(id: string, dates: RuleDateDto) {
-        const {startDate, endDate,startTime,endTime} = dates;
-        console.log(startDate ,endDate)
+        const {startDate, endDate, startTime, endTime} = dates;
+        console.log(startDate, endDate)
         const start = `${startDate}T${startTime}`
         const end = `${endDate}T${endTime}`
-        console.log(start,end);
-        
+        console.log(start, end);
+
         return this.AdaptionModel.aggregate([
             {
                 $match: {
@@ -107,7 +106,7 @@ export default class RulesService {
         return this.AdaptionModel.aggregate([
             {
                 $match: {
-                    ruleId:new Types.ObjectId(id),
+                    ruleId: new Types.ObjectId(id),
                 },
             },
             {
