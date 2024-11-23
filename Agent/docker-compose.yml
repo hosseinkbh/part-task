@@ -9,7 +9,7 @@ services:
       AGENT_ID: 1
       KAFKA_TOPIC: main-topic
       KAFKA_BROKER: kafka:9092
-      KAFKA_CLIENT_ID: agent-client
+      KAFKA_CLIENT_ID: kafka-client
       KAFKA_GROUP_ID: kafka-group
     depends_on:
       - kafka

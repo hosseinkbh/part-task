@@ -11,7 +11,7 @@ services:
       REDIS_PORT: 6379
       KAFKA_TOPIC: main-topic
       KAFKA_BROKER: kafka:9092
-      KAFKA_CLIENT_ID: process-client
+      KAFKA_CLIENT_ID: kafka-client
       KAFKA_GROUP_ID: kafka-group
     depends_on:
       - kafka

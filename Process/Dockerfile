@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN yarn --verbose 
 
-COPY * .
+COPY . .
 
 EXPOSE 3002
 

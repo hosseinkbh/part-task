@@ -6,7 +6,7 @@ COPY package*.json ./
 
 RUN yarn --production=false
 
-COPY * .
+COPY . .
 
 EXPOSE 3002
 
